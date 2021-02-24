@@ -1,7 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env bash
+[ "${DEBUG}" == 'true' ] && set -v
+export INITIAL_USER_NAME=admin
+export INITIAL_USER_PASSWORD=p4ssWord
+
 {{ if eq .Values.bashDebug true }}
 set -x
 {{ end }}
+
 
 #
 # main run
@@ -11,7 +16,7 @@ then
     echo
     echo "CENM: starting CENM Auth service ..."
     echo
-    java -jar bin/accounts-application.jar --config-file authservice.conf --initial-user-name admin --initial-user-password p4ssWord --keep-running --verbose
+    java -jar bin/accounts-application.jar --config-file authservice.conf --initial-user-name ${INITIAL_USER_NAME} --initial-user-password ${INITIAL_USER_PASSWORD} --keep-running --verbose
     EXIT_CODE=${?}
 else
     echo "Missing Auth service jar file."

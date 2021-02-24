@@ -1,9 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
+[ "${DEBUG}" == 'true' ] && set -v
+export INITIAL_USER_NAME=admin
+export INITIAL_USER_PASSWORD=p4ssWord
+
 # log in and cache access token
 ACCESS_TOKEN=""
 while [ -z "${ACCESS_TOKEN}" ]
 do
-    TOKEN_RESPONSE="$(curl -X POST --data "grant_type=password" --data "username=admin" --data "password=p4ssWord" http://${1}:${2}/api/v1/authentication/authenticate)"
+    TOKEN_RESPONSE="$(curl -X POST --data "grant_type=password" --data "username=${INITIAL_USER_NAME}" --data "password=${INITIAL_USER_PASSWORD}" http://${1}:${2}/api/v1/authentication/authenticate)"
     ACCESS_TOKEN="$(echo ${TOKEN_RESPONSE} | jq -r '.access_token')"
     sleep 5
 done
